@@ -1,0 +1,15 @@
+{
+  "name": "family-server",
+  "version": "1.0.0",
+  "description": "practice server of an api of my family!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/nodemon app.js"
+  },
+  "author": "missalyss",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
