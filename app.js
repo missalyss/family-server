@@ -20,10 +20,13 @@ app.get('/partners', getResource('partners'))
 
 ////////////////////////////////////
 
-app.get('/members/:index', getResourceIndex(data.members))
-app.get('/partners/:index', getResourceIndex(data.partners))
+app.get('/members/:index', findOne(data.members), showOne)
+app.get('/partners/:index', findOne(data.partners), showOne)
 
 ////////////////////////////////////
+
+app.delete('/members/:index', findOne(data.members), deleteOne(data.members))
+app.delete('/partners/:index', findOne(data.partners), deleteOne(data.partners))
 
 
 ////////////////////////////////////
@@ -37,22 +40,28 @@ function getResource(resource) {
     }
 }
 
-function getResourceIndex(resource) {
-    return function (req, res) {
-      var index = req.params.index
-      req.oneObj = resource[index]
-      res.json(req.oneObj)
+function findOne(resource) {
+    return function (req, res, next) {
+        var index = req.params.index
+        req.oneObj = resource[index]
+        next()
     }
 }
 
-function deleteMe(req, res) {
-    var index = req.params.index
-    var trainSolo = trainsResource[index]
-    if  (!trainSolo){
-      res.status(404).send({message:`No train found for index ${index}.`})
-    } else {
-      trainSolo = trainsResource.splice(index, 1)
-      res.status(210).send(trainSolo)
+function showOne(req, res) {
+    res.json(req.oneObj)
+}
+
+
+function deleteOne(resource) {
+    return function (req, res) {
+      var index = req.params.index
+        if  (!req.oneObj){
+            res.status(404).send({message:`Nothing found for index ${index}.`})
+        } else {
+            req.oneObj = resource.splice(index, 1)
+            res.status(200).json(req.oneObj)
+        }
     }
 }
 
