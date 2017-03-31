@@ -33,6 +33,14 @@ app.delete('/partners/:index', findOne(data.partners), deleteOne(data.partners))
 app.post('/members', createOne(data.members))
 app.post('/partners', createOne(data.partners))
 
+////////////////////////////////////
+
+// app.patch('/members/:index', findOne(data.members), patchOne(data.members))
+// app.patch('/partners/:index', findOne(data.partners), patchOne(data.partners))
+
+////////////////////////////////////
+
+app.put('./members/:index', findOne(data.members), putOne(data.members) )
 
 ////////////////////////////////////
 app.use(errorHandler)
@@ -49,6 +57,7 @@ function findOne(resource) {
     return function (req, res, next) {
         var index = req.params.index
         req.oneObj = resource[index]
+        console.log(req.oneObj);
         next()
     }
 }
@@ -77,6 +86,34 @@ function createOne(resource) {
         res.status(201).json(onePost)
     }
 }
+
+function putOne(resource) {
+    return function (req, res) {
+        var index = req.params.index
+        // if  (!req.oneObj){
+        //     res.status(404).send({message:`Nothing found for index ${index}.`})
+        // } else {
+        console.log(req.oneObj);
+            req.oneObj = resource.splice(index, 1)
+            // res.status(200).json(req.oneObj)
+            var onePost = req.body
+            // resource.push(onePost)
+            console.log(onePost);
+            res.status(201).json(onePost)
+        // }
+    }
+}
+
+
+
+
+// function patchOne(resource) {
+//     return function (req, res) {
+//         var onePost = req.body
+//         resource.push(onePost)
+//         res.status(201).json(onePost)
+//     }
+// }
 
 ////////////////////////////////////
 function errorHandler(err, req, res, next) {
