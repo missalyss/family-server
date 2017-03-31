@@ -15,10 +15,10 @@ app.use(bodyParser.json())
 app.disable('x-powered-by')
 ////////////////////////////////////
 
+// app.get('/', getResource('data')) //I was gonna see if I could get all the information at once but it's not really worth my time to troubleshoot
+
 app.get('/members', getResource('members'))
 app.get('/partners', getResource('partners'))
-
-////////////////////////////////////
 
 app.get('/members/:index', findOne(data.members), showOne)
 app.get('/partners/:index', findOne(data.partners), showOne)
@@ -27,6 +27,11 @@ app.get('/partners/:index', findOne(data.partners), showOne)
 
 app.delete('/members/:index', findOne(data.members), deleteOne(data.members))
 app.delete('/partners/:index', findOne(data.partners), deleteOne(data.partners))
+
+////////////////////////////////////
+
+app.post('/members', createOne(data.members))
+app.post('/partners', createOne(data.partners))
 
 
 ////////////////////////////////////
@@ -62,6 +67,14 @@ function deleteOne(resource) {
             req.oneObj = resource.splice(index, 1)
             res.status(200).json(req.oneObj)
         }
+    }
+}
+
+function createOne(resource) {
+    return function (req, res) {
+        var onePost = req.body
+        resource.push(onePost)
+        res.status(201).json(onePost)
     }
 }
 
