@@ -17,8 +17,8 @@ app.disable('x-powered-by')
 
 // app.get('/', getResource('data')) //I was gonna see if I could get all the information at once but it's not really worth my time to troubleshoot
 
-app.get('/members', getResource('members'))
-app.get('/partners', getResource('partners'))
+app.get('/members', getResource(members))
+app.get('/partners', getResource(partners))
 
 app.get('/members/:index', findOne(data.members), showOne)
 app.get('/partners/:index', findOne(data.partners), showOne)
@@ -57,7 +57,7 @@ function findOne(resource) {
     return function (req, res, next) {
         var index = req.params.index
         req.oneObj = resource[index]
-        console.log(req.oneObj);
+        console.log(req.oneObj)
         next()
     }
 }
